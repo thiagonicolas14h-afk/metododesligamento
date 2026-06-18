@@ -49,9 +49,10 @@ function Index() {
   );
 }
 
-function CTAButton({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+function CTAButton({ children, className = "", href = "#oferta" }: { children: React.ReactNode; className?: string; href?: string }) {
+  const external = href.startsWith("http");
   return (
-    <a href="#oferta" className={`group inline-flex items-center justify-between gap-3 bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 py-4 rounded-full shadow-lg hover:scale-[1.02] transition w-full ${className}`}>
+    <a href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})} className={`group inline-flex items-center justify-between gap-3 bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 py-4 rounded-full shadow-lg hover:scale-[1.02] transition w-full ${className}`}>
       <span className="flex-1 text-center text-sm md:text-base">{children}</span>
       <span className="bg-navy text-white rounded-full p-2"><ArrowRight size={16} /></span>
     </a>
