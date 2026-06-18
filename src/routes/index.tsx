@@ -340,12 +340,7 @@ function Guarantee() {
   return (
     <section className="bg-accent px-5 py-14">
       <div className="max-w-3xl mx-auto md:flex md:items-center md:gap-8 text-center md:text-left">
-        <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-navy text-primary shrink-0 mx-auto md:mx-0 mb-4 md:mb-0 border-4 border-primary">
-          <div className="text-center">
-            <Shield size={28} className="mx-auto"/>
-            <p className="text-[9px] font-bold mt-0.5">7 DIAS</p>
-          </div>
-        </div>
+        <img src={seloGarantia.url} alt="Selo de Garantia 7 Dias" className="w-32 h-32 md:w-40 md:h-40 shrink-0 mx-auto md:mx-0 mb-4 md:mb-0 object-contain" loading="lazy" />
         <div>
           <h2 className="text-2xl md:text-3xl text-navy font-bold">Garantia de 7 Dias</h2>
           <p className="mt-3 text-sm text-foreground leading-relaxed">
