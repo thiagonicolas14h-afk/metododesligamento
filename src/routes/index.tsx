@@ -3,6 +3,7 @@ import heroAwake from "@/assets/hero-awake.jpg";
 import heroSleep from "@/assets/hero-sleep.jpg";
 import productMockup from "@/assets/product-mockup.png";
 import methodMockup from "@/assets/method-mockup.png.asset.json";
+import seloGarantia from "@/assets/selo-garantia.png.asset.json";
 import {
   Check, X, Zap, Brain, Moon, Heart, Star, Shield, ChevronDown,
   ArrowRight, Clock, Lock, BookOpen, Headphones, ClipboardList,
