@@ -49,9 +49,10 @@ function Index() {
   );
 }
 
-function CTAButton({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+function CTAButton({ children, className = "", href = "#oferta" }: { children: React.ReactNode; className?: string; href?: string }) {
+  const external = href.startsWith("http");
   return (
-    <a href="#oferta" className={`group inline-flex items-center justify-between gap-3 bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 py-4 rounded-full shadow-lg hover:scale-[1.02] transition w-full ${className}`}>
+    <a href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})} className={`group inline-flex items-center justify-between gap-3 bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 py-4 rounded-full shadow-lg hover:scale-[1.02] transition w-full ${className}`}>
       <span className="flex-1 text-center text-sm md:text-base">{children}</span>
       <span className="bg-navy text-white rounded-full p-2"><ArrowRight size={16} /></span>
     </a>
@@ -321,7 +322,7 @@ function Pricing() {
             <span className="text-lg text-foreground align-top">R$</span>
             <span className="text-5xl md:text-6xl font-bold text-navy">27,00</span>
           </div>
-          <div className="mt-5"><CTAButton>QUERO MEU ACESSO AGORA</CTAButton></div>
+          <div className="mt-5"><CTAButton href="https://pay.cakto.com.br/38dee85_926622">QUERO MEU ACESSO AGORA</CTAButton></div>
           <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-2 text-left">
             {perks.map((p) => (
               <li key={p} className="flex items-center gap-2 text-xs text-foreground">
