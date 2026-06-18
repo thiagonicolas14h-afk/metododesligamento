@@ -322,7 +322,7 @@ function Pricing() {
             <span className="text-lg text-foreground align-top">R$</span>
             <span className="text-5xl md:text-6xl font-bold text-navy">27,00</span>
           </div>
-          <div className="mt-5"><CTAButton>QUERO MEU ACESSO AGORA</CTAButton></div>
+          <div className="mt-5"><CTAButton href="https://pay.cakto.com.br/38dee85_926622">QUERO MEU ACESSO AGORA</CTAButton></div>
           <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-2 text-left">
             {perks.map((p) => (
               <li key={p} className="flex items-center gap-2 text-xs text-foreground">
