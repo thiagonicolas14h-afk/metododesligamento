@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import heroAwake from "@/assets/hero-awake.jpg";
 import heroSleep from "@/assets/hero-sleep.jpg";
 import productMockup from "@/assets/product-mockup.png";
+import methodMockup from "@/assets/method-mockup.png.asset.json";
 import {
   Check, X, Zap, Brain, Moon, Heart, Star, Shield, ChevronDown,
   ArrowRight, Clock, Lock, BookOpen, Headphones, ClipboardList,
@@ -181,7 +182,7 @@ function Method() {
           Conheça o <span className="text-primary">Método Desligamento Mental</span>
         </h2>
         <div className="mt-8 md:grid md:grid-cols-2 md:gap-10 md:items-center">
-          <img src={productMockup} alt="Método Desligamento Mental" className="w-full max-w-sm mx-auto" loading="lazy" />
+          <img src={methodMockup.url} alt="Método Desligamento Mental" className="w-full max-w-md mx-auto rounded-xl" loading="lazy" />
           <div className="mt-6 md:mt-0">
             <p className="text-sm md:text-base text-white/85 leading-relaxed">
               Um método prático, passo a passo, criado para ajudar você a interromper o ciclo de pensamentos acelerados que impede seu cérebro de relaxar e entrar naturalmente no sono.
