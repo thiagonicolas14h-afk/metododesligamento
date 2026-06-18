@@ -70,8 +70,8 @@ function Hero() {
   return (
     <section className="bg-navy text-white relative overflow-hidden">
       <div className="absolute inset-0 md:left-1/2">
-        <img src={heroAwake} alt="Mulher acordada à noite" className="w-full h-full object-cover opacity-40 md:opacity-100" />
-        <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/80 to-transparent md:from-navy md:via-navy/60" />
+        <img src={heroAwake} alt="Mulher acordada à noite" className="w-full h-full object-cover object-top opacity-30 md:opacity-100" />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy/70 via-navy/85 to-navy md:bg-gradient-to-r md:from-navy md:via-navy/60 md:to-transparent" />
       </div>
       <div className="relative max-w-6xl mx-auto px-5 pt-10 pb-12 md:py-20 md:grid md:grid-cols-2 md:gap-8">
         <div>
@@ -235,10 +235,10 @@ function Benefits() {
 function Inside() {
   const items = [
     { icon: BookOpen, t: "MÉTODO COMPLETO", d: "Passo a passo para silenciar sua mente e dormir melhor." },
-    { icon: Headphones, t: "ÁUDIOS EXCLUSIVOS", d: "Exercícios de relaxamento e meditações guiadas." },
     { icon: ClipboardList, t: "ROTINA NOTURNA", d: "Um plano simples para preparar sua mente e corpo." },
     { icon: Brain, t: "ESTRATÉGIAS PRÁTICAS", d: "Técnicas para lidar com pensamentos acelerados." },
-    { icon: Moon, t: "BÔNUS EXTRAS", d: "Materiais complementares para acelerar seus resultados." },
+    { icon: Moon, t: "BÔNUS 1: DIÁRIO DO SONO", d: "Registre suas noites e identifique padrões para evoluir mais rápido." },
+    { icon: Sparkles, t: "BÔNUS 2: GUIA DE TÉCNICAS", d: "Guia completo com técnicas extras para dormir melhor todas as noites." },
   ];
   return (
     <section className="bg-cream px-5 py-14">
