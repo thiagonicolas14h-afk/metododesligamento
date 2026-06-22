@@ -1,23 +1,25 @@
 import { createFileRoute } from "@tanstack/react-router";
-import heroAwake from "@/assets/hero-awake.jpg";
-import heroSleep from "@/assets/hero-sleep.jpg";
-import productMockup from "@/assets/product-mockup.png";
-import methodMockup from "@/assets/method-mockup.png.asset.json";
-import seloGarantia from "@/assets/selo-garantia.png.asset.json";
-import {
-  Check, X, Zap, Brain, Moon, Heart, Star, Shield, ChevronDown,
-  ArrowRight, Clock, Lock, BookOpen, Headphones, ClipboardList,
-  Sparkles, Sun, Target, Flower2, User, Lightbulb,
-} from "lucide-react";
 import { useState } from "react";
+import heroImg from "@/assets/salgados-hero.jpg";
+import mockup from "@/assets/salgados-mockup.png";
+import coxinhas from "@/assets/coxinhas.jpg";
+import assados from "@/assets/salgados-assados.jpg";
+import garantia from "@/assets/garantia-7dias.png";
+import {
+  Check, X, ChevronDown, ArrowRight, Shield, Lock, Clock, Star,
+  ChefHat, Flame, DollarSign, Home, TrendingUp, Heart, Sparkles,
+  Snowflake, Cookie, Award, ShoppingCart, Zap, Gift,
+} from "lucide-react";
+
+const CHECKOUT_URL = "https://pay.cakto.com.br/38dee85_926622";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Método Desligamento Mental — Durma em até 15 minutos" },
-      { name: "description", content: "Durma em até 15 minutos mesmo que sua mente não pare de pensar. Método natural usado por milhares de brasileiros." },
-      { property: "og:title", content: "Método Desligamento Mental" },
-      { property: "og:description", content: "Durma em até 15 minutos mesmo que sua mente não pare de pensar." },
+      { title: "Segredos dos Salgados Lucrativos — Fature com Salgados em Casa" },
+      { name: "description", content: "Aprenda a fazer salgados profissionais e transforme sua cozinha em fonte de renda. Receitas testadas, técnicas e bônus exclusivos." },
+      { property: "og:title", content: "Segredos dos Salgados Lucrativos" },
+      { property: "og:description", content: "Receitas testadas e técnicas profissionais para você começar a vender salgados ainda esta semana." },
     ],
   }),
   component: Index,
@@ -25,238 +27,284 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background font-sans">
       <Hero />
-      <Problems />
-      <WhyNotSleep />
-      <Method />
+      <Pains />
+      <Learn />
       <Benefits />
-      <Inside />
+      <Bonuses />
+      <Transformation />
       <Testimonials />
-      <Pricing />
       <Guarantee />
+      <Offer />
       <FAQ />
-      <footer className="bg-navy text-white/70 text-xs text-center py-8 px-4 space-y-2">
-        <div className="flex flex-wrap justify-center gap-5 text-white/80">
-          <span className="flex items-center gap-1"><Shield size={12}/> Compra segura</span>
-          <span className="flex items-center gap-1"><Check size={12}/> Satisfação garantida</span>
-          <span className="flex items-center gap-1"><Lock size={12}/> Privacidade protegida</span>
-          <span className="flex items-center gap-1"><Clock size={12}/> Acesso imediato</span>
-        </div>
-        <p>© 2026 Método Desligamento Mental. Todos os direitos reservados.</p>
-      </footer>
+      <FinalCTA />
+      <Footer />
     </div>
   );
 }
 
-function CTAButton({ children, className = "", href = "#oferta" }: { children: React.ReactNode; className?: string; href?: string }) {
-  const external = href.startsWith("http");
+function CTA({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) {
   return (
-    <a href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})} className={`group inline-flex items-center justify-between gap-3 bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-6 py-4 rounded-full shadow-lg hover:scale-[1.02] transition w-full ${className}`}>
-      <span className="flex-1 text-center text-sm md:text-base">{children}</span>
-      <span className="bg-navy text-white rounded-full p-2"><ArrowRight size={16} /></span>
+    <a
+      id={id}
+      href={CHECKOUT_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`group inline-flex items-center justify-center gap-3 bg-primary hover:bg-[color:var(--brand-red-dark)] text-primary-foreground font-extrabold px-6 py-4 md:py-5 rounded-full shadow-[0_10px_30px_-10px_rgba(220,38,38,0.6)] hover:scale-[1.02] active:scale-100 transition w-full text-sm md:text-base uppercase tracking-wide ${className}`}
+    >
+      <ShoppingCart size={20} className="shrink-0" />
+      <span className="text-center">{children}</span>
+      <ArrowRight size={18} className="shrink-0 group-hover:translate-x-1 transition" />
     </a>
   );
 }
 
-function TrustRow() {
+function TrustRow({ light = false }: { light?: boolean }) {
+  const cls = light ? "text-white/90" : "text-foreground/80";
   return (
-    <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-white/80">
-      <span className="flex items-center gap-1.5"><Check size={14} className="text-primary"/> Acesso imediato</span>
-      <span className="flex items-center gap-1.5"><Shield size={14} className="text-primary"/> Pagamento seguro</span>
-      <span className="flex items-center gap-1.5"><Clock size={14} className="text-primary"/> 7 dias de garantia</span>
+    <div className={`flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs ${cls}`}>
+      <span className="flex items-center gap-1.5"><Lock size={14}/> Compra 100% segura</span>
+      <span className="flex items-center gap-1.5"><Zap size={14}/> Acesso imediato</span>
+      <span className="flex items-center gap-1.5"><Shield size={14}/> Garantia de 7 dias</span>
+    </div>
+  );
+}
+
+function SectionTitle({ kicker, children }: { kicker?: string; children: React.ReactNode }) {
+  return (
+    <div className="text-center max-w-3xl mx-auto">
+      {kicker && (
+        <span className="inline-block bg-secondary text-secondary-foreground text-[11px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-md mb-3">
+          {kicker}
+        </span>
+      )}
+      <h2 className="text-3xl md:text-4xl font-extrabold text-navy leading-tight font-display">
+        {children}
+      </h2>
     </div>
   );
 }
 
 function Hero() {
   return (
-    <section className="bg-navy text-white relative overflow-hidden">
-      <div className="absolute inset-0 md:left-1/2">
-        <img src={heroAwake} alt="Mulher acordada à noite" className="w-full h-full object-cover object-top opacity-30 md:opacity-100" />
-        <div className="absolute inset-0 bg-gradient-to-b from-navy/70 via-navy/85 to-navy md:bg-gradient-to-r md:from-navy md:via-navy/60 md:to-transparent" />
-      </div>
-      <div className="relative max-w-6xl mx-auto px-5 pt-10 pb-12 md:py-20 md:grid md:grid-cols-2 md:gap-8">
+    <section className="relative overflow-hidden bg-gradient-to-br from-[color:var(--brand-red-dark)] via-primary to-[color:var(--brand-red-dark)] text-white">
+      <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_30%_20%,white,transparent_40%)]" />
+      <div className="relative max-w-6xl mx-auto px-5 pt-10 pb-14 md:py-20 grid md:grid-cols-2 gap-8 items-center">
         <div>
-          <span className="inline-block bg-primary/90 text-navy text-[11px] font-semibold px-3 py-1.5 rounded-md">
-            Chega de noites em claro e pensamentos que não param.
+          <span className="inline-flex items-center gap-2 bg-secondary text-navy text-[11px] font-extrabold uppercase tracking-wider px-3 py-1.5 rounded-full">
+            <Flame size={14}/> Método comprovado
           </span>
-          <h1 className="mt-5 text-3xl md:text-5xl font-bold leading-tight">
-            Durma em até 15 minutos<br/>
-            mesmo que sua mente<br/>
-            <span className="text-primary">não pare de pensar</span>
+          <h1 className="mt-5 text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.05] font-display">
+            Aprenda a fazer <span className="text-secondary">salgados profissionais</span> e transforme sua cozinha em uma fonte de renda.
           </h1>
-          <p className="mt-5 text-sm md:text-base text-white/80 max-w-md">
-            O Método Desligamento Mental já ajudou milhares de pessoas a silenciar a mente e ter noites profundas e restauradoras.
+          <p className="mt-5 text-base md:text-lg text-white/90 max-w-lg">
+            Descubra receitas testadas, massas perfeitas e técnicas que podem ajudar você a começar a <strong>vender ainda esta semana</strong>.
           </p>
-          <div className="mt-6 max-w-md">
-            <CTAButton>QUERO DORMIR MELHOR HOJE</CTAButton>
-          </div>
-          <div className="mt-5"><TrustRow /></div>
+          <ul className="mt-5 space-y-2 text-sm">
+            {["Receitas passo a passo", "Ingredientes acessíveis", "Lucro real comprovado"].map(i => (
+              <li key={i} className="flex items-center gap-2"><Check className="text-secondary" size={18}/> {i}</li>
+            ))}
+          </ul>
+          <div className="mt-7 max-w-md"><CTA>Quero começar agora</CTA></div>
+          <div className="mt-5"><TrustRow light /></div>
+        </div>
+        <div className="relative">
+          <div className="absolute -inset-6 bg-secondary/30 blur-3xl rounded-full" />
+          <img
+            src={mockup}
+            alt="Mockup do ebook Segredos dos Salgados Lucrativos"
+            width={1024}
+            height={1024}
+            className="relative w-full max-w-md mx-auto drop-shadow-2xl"
+          />
         </div>
       </div>
     </section>
   );
 }
 
-function Problems() {
-  const items = [
-    "Você dá de 1 a 2 horas (ou mais) para conseguir dormir.",
-    "Fica revivendo situações e diálogos na mente.",
-    "Pensa em problemas, tarefas e preocupações.",
-    "Tem ansiedade ou aperto no peito na hora de deitar.",
-    "Acorda cansado mesmo após dormir 7, 8 ou 9 horas.",
+function Pains() {
+  const pains = [
+    "Você não sabe por onde começar.",
+    "Tem medo de errar as receitas e desperdiçar ingredientes.",
+    "Já tentou fazer salgados e não conseguiu vender.",
+    "Precisa aumentar a renda da família agora.",
+    "Quer trabalhar em casa e ter mais liberdade.",
   ];
   return (
-    <section className="px-5 py-14 bg-background">
-      <div className="max-w-5xl mx-auto md:grid md:grid-cols-2 md:gap-10 md:items-center">
-        <div className="rounded-xl overflow-hidden shadow-lg mb-8 md:mb-0">
-          <img src={heroSleep} alt="Mente inquieta" className="w-full h-auto" loading="lazy" />
-        </div>
+    <section className="px-5 py-16 bg-cream">
+      <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-10 items-center">
+        <img src={coxinhas} alt="Salgados fritos crocantes" width={1024} height={768} loading="lazy" className="rounded-2xl shadow-xl w-full h-auto object-cover" />
         <div>
-          <h2 className="text-2xl md:text-3xl text-navy font-bold leading-tight">
-            Sua mente não desliga<br/>quando você mais precisa?
-          </h2>
-          <p className="text-muted-foreground text-sm mt-3">
-            Se você se identifica com algum desses sinais, você não está sozinho.
-          </p>
-          <ul className="mt-6 space-y-2.5">
-            {items.map((it) => (
-              <li key={it} className="bg-card flex items-start gap-3 px-4 py-3 rounded-md border border-border shadow-sm">
-                <X className="text-red-500 shrink-0 mt-0.5" size={18} />
-                <span className="text-sm text-foreground">{it}</span>
+          <SectionTitle kicker="Você se identifica?">
+            Cansado de tentar e não ter <span className="text-primary">resultado</span>?
+          </SectionTitle>
+          <ul className="mt-6 space-y-3">
+            {pains.map(p => (
+              <li key={p} className="flex items-start gap-3 bg-white border border-border rounded-xl p-4 shadow-sm">
+                <span className="bg-primary/10 text-primary rounded-full p-1 mt-0.5 shrink-0"><X size={16}/></span>
+                <span className="text-sm text-foreground">{p}</span>
               </li>
             ))}
           </ul>
+          <p className="mt-6 text-sm text-foreground/80 text-center md:text-left">
+            <strong>Você não está sozinho.</strong> E a boa notícia é que existe um caminho simples e testado.
+          </p>
         </div>
       </div>
     </section>
   );
 }
 
-function WhyNotSleep() {
-  const causes = [
-    { icon: Brain, title: "Pensamentos acelerados", desc: "Sua mente não para de pensar, mesmo quando seu corpo está exausto." },
-    { icon: Zap, title: "Excesso de estímulos", desc: "Celular, redes sociais e notícias deixam seu cérebro sempre em estado de alerta." },
-    { icon: Sparkles, title: "Ansiedade e estresse", desc: "Sua mente associa a noite ao cansaço, cobrança e preocupações do dia." },
-    { icon: Heart, title: "Impacta todo o seu dia", desc: "Mau humor, falta de foco, cansaço e queda na produtividade." },
+function Learn() {
+  const items = [
+    { icon: ChefHat, t: "Massa profissional", d: "A massa perfeita para salgados fritos, lisa, fácil de modelar e que não racha." },
+    { icon: Sparkles, t: "Técnicas de modelagem", d: "Coxinha, risole, kibe e bolinha de queijo no formato profissional." },
+    { icon: Cookie, t: "Recheios mais vendidos", d: "Os recheios que mais geram pedidos e fidelizam clientes." },
+    { icon: Flame, t: "Sequinhos e crocantes", d: "O segredo da fritura para salgados douradinhos e que não embebem óleo." },
+    { icon: DollarSign, t: "Custos e precificação", d: "Saiba quanto cobrar, calcular margem e nunca mais vender no prejuízo." },
+    { icon: TrendingUp, t: "Como vender mais", d: "Estratégias práticas para conseguir os primeiros clientes e crescer." },
   ];
   return (
-    <section className="px-5 py-14 max-w-5xl mx-auto">
-      <h2 className="text-2xl md:text-3xl text-center text-navy font-bold">
-        Por que você não consegue dormir?
-      </h2>
-      <p className="text-center text-muted-foreground text-sm mt-3 max-w-xl mx-auto">
-        Muitas pessoas acreditam que o problema é falta de sono. Na verdade, o que acontece é que a mente entra em um ciclo de ruminação e não desacelera.
-      </p>
-      <div className="mt-8 grid grid-cols-2 lg:grid-cols-4 gap-3">
-        {causes.map(({ icon: Icon, title, desc }) => (
-          <div key={title} className="bg-card border border-border rounded-xl p-5 text-center shadow-sm">
-            <div className="mx-auto w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center mb-3">
-              <Icon size={22} className="text-navy" />
+    <section className="px-5 py-16 bg-background">
+      <SectionTitle kicker="Conteúdo do curso">
+        O que você vai <span className="text-primary">aprender</span>
+      </SectionTitle>
+      <div className="mt-10 max-w-5xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {items.map(({ icon: Icon, t, d }) => (
+          <div key={t} className="group bg-white border border-border rounded-2xl p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition">
+            <div className="w-12 h-12 rounded-xl bg-primary text-primary-foreground flex items-center justify-center mb-4">
+              <Icon size={22}/>
             </div>
-            <p className="text-sm font-bold text-navy">{title}</p>
-            <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{desc}</p>
+            <h3 className="font-bold text-navy text-lg">{t}</h3>
+            <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{d}</p>
           </div>
         ))}
       </div>
-      <div className="mt-6 bg-accent border border-primary/40 p-5 rounded-xl text-center">
-        <p className="font-bold text-navy flex items-center justify-center gap-2"><Lightbulb size={18}/> A boa notícia?</p>
-        <p className="text-sm text-foreground mt-2">
-          Você não precisa lutar contra a mente. Você só precisa aprender a desligá-la. Isso é exatamente o que o <strong>Método Desligamento Mental</strong> ensina.
-        </p>
-      </div>
-    </section>
-  );
-}
-
-function Method() {
-  const bullets = [
-    "Técnicas simples e eficazes",
-    "Baseado em ciência + experiência prática",
-    "Funciona mesmo se você já tentou de tudo",
-    "Resultados rápidos e duradouros",
-  ];
-  return (
-    <section className="bg-navy text-white px-5 py-16">
-      <div className="max-w-5xl mx-auto">
-        <h2 className="text-2xl md:text-3xl text-center font-bold">
-          Conheça o <span className="text-primary">Método Desligamento Mental</span>
-        </h2>
-        <div className="mt-8 md:grid md:grid-cols-2 md:gap-10 md:items-center">
-          <img src={methodMockup.url} alt="Método Desligamento Mental" className="w-full max-w-md mx-auto rounded-xl" loading="lazy" />
-          <div className="mt-6 md:mt-0">
-            <p className="text-sm md:text-base text-white/85 leading-relaxed">
-              Um método prático, passo a passo, criado para ajudar você a interromper o ciclo de pensamentos acelerados que impede seu cérebro de relaxar e entrar naturalmente no sono.
-            </p>
-            <ul className="mt-5 space-y-2.5">
-              {bullets.map((b) => (
-                <li key={b} className="flex items-center gap-2 text-sm">
-                  <span className="bg-primary text-navy rounded-full p-0.5"><Check size={14}/></span>
-                  {b}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-6"><CTAButton>QUERO DORMIR MELHOR AGORA</CTAButton></div>
-            <div className="mt-5"><TrustRow /></div>
-          </div>
-        </div>
-      </div>
+      <div className="mt-10 max-w-md mx-auto"><CTA>Quero garantir meu acesso</CTA></div>
     </section>
   );
 }
 
 function Benefits() {
   const list = [
-    { icon: Moon, t: "Adormecer mais rápido" },
-    { icon: User, t: "Mente tranquila durante a noite" },
-    { icon: Sun, t: "Acordar com mais energia e disposição" },
-    { icon: Target, t: "Mais foco e clareza para o seu dia" },
-    { icon: Flower2, t: "Melhor qualidade de sono" },
-    { icon: Heart, t: "Reduzir ansiedade e estresse" },
+    "Receitas simples e explicadas passo a passo",
+    "Ingredientes acessíveis e baratos",
+    "Ideal para quem está começando do zero",
+    "Técnicas profissionais usadas por salgadeiras de sucesso",
+    "Gere renda extra trabalhando da sua casa",
+    "Acesso imediato após a compra",
   ];
   return (
-    <section className="px-5 py-14 max-w-5xl mx-auto">
-      <h2 className="text-2xl md:text-3xl text-center text-navy font-bold">
-        Depois de aplicar o método, você poderá:
-      </h2>
-      <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 text-center">
-        {list.map(({ icon: Icon, t }) => (
-          <div key={t} className="flex flex-col items-center">
-            <Icon className="text-navy mb-2" size={32} strokeWidth={1.5} />
-            <p className="text-xs md:text-sm font-semibold text-navy leading-snug">{t}</p>
-          </div>
-        ))}
-      </div>
-      <div className="mt-8 bg-accent border border-primary/40 rounded-xl py-4 px-5 text-center">
-        <p className="text-sm font-semibold text-navy">Transforme suas noites. Transforme seus dias. Transforme sua vida.</p>
+    <section className="px-5 py-16 bg-navy text-white">
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center max-w-3xl mx-auto">
+          <span className="inline-block bg-secondary text-navy text-[11px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-md mb-3">
+            Por que funciona
+          </span>
+          <h2 className="text-3xl md:text-4xl font-extrabold font-display">
+            Por que este método é <span className="text-secondary">diferente</span>?
+          </h2>
+        </div>
+        <div className="mt-10 grid sm:grid-cols-2 gap-4">
+          {list.map(b => (
+            <div key={b} className="flex items-start gap-3 bg-white/5 border border-white/10 rounded-xl p-4 backdrop-blur">
+              <span className="bg-secondary text-navy rounded-full p-1 shrink-0"><Check size={16}/></span>
+              <span className="text-sm md:text-base">{b}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
 }
 
-function Inside() {
-  const items = [
-    { icon: BookOpen, t: "MÉTODO COMPLETO", d: "Passo a passo para silenciar sua mente e dormir melhor." },
-    { icon: ClipboardList, t: "ROTINA NOTURNA", d: "Um plano simples para preparar sua mente e corpo." },
-    { icon: Brain, t: "ESTRATÉGIAS PRÁTICAS", d: "Técnicas para lidar com pensamentos acelerados." },
-    { icon: Moon, t: "BÔNUS 1: DIÁRIO DO SONO", d: "Registre suas noites e identifique padrões para evoluir mais rápido." },
-    { icon: Sparkles, t: "BÔNUS 2: GUIA DE TÉCNICAS", d: "Guia completo com técnicas extras para dormir melhor todas as noites." },
-  ];
+function Bonuses() {
   return (
-    <section className="bg-cream px-5 py-14">
-      <div className="max-w-5xl mx-auto">
-        <h2 className="text-2xl md:text-3xl text-center text-navy font-bold">
-          Dentro do Método Desligamento Mental você recebe:
-        </h2>
-        <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 text-center">
-          {items.map(({ icon: Icon, t, d }) => (
-            <div key={t}>
-              <Icon className="mx-auto text-navy mb-3" size={36} strokeWidth={1.5} />
-              <p className="text-xs font-bold text-navy">{t}</p>
-              <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{d}</p>
+    <section className="px-5 py-16 bg-cream">
+      <SectionTitle kicker="🎁 Bônus exclusivos">
+        Comprando hoje você <span className="text-primary">ganha também</span>
+      </SectionTitle>
+      <div className="mt-10 max-w-5xl mx-auto grid md:grid-cols-2 gap-6">
+        <div className="bg-white rounded-2xl border-2 border-primary/30 shadow-lg overflow-hidden">
+          <div className="bg-primary text-primary-foreground px-5 py-3 flex items-center gap-2 font-bold">
+            <Gift size={18}/> BÔNUS 1
+          </div>
+          <div className="p-6">
+            <div className="flex items-center gap-3 mb-3">
+              <Snowflake className="text-primary" size={28}/>
+              <h3 className="font-extrabold text-xl text-navy">Guia de Congelamento de Salgados</h3>
             </div>
-          ))}
+            <ul className="space-y-2 text-sm text-foreground">
+              {["Como congelar corretamente sem perder textura", "Prazo de validade de cada tipo", "Armazenamento profissional", "Técnicas para produzir em escala"].map(i => (
+                <li key={i} className="flex gap-2"><Check className="text-primary shrink-0 mt-0.5" size={16}/> {i}</li>
+              ))}
+            </ul>
+            <p className="mt-4 text-xs text-muted-foreground line-through">De R$ 47,00</p>
+            <p className="text-sm font-bold text-primary">GRÁTIS para você hoje</p>
+          </div>
+        </div>
+        <div className="bg-white rounded-2xl border-2 border-primary/30 shadow-lg overflow-hidden">
+          <div className="bg-primary text-primary-foreground px-5 py-3 flex items-center gap-2 font-bold">
+            <Gift size={18}/> BÔNUS 2
+          </div>
+          <div className="p-6">
+            <div className="flex items-center gap-3 mb-3">
+              <Cookie className="text-primary" size={28}/>
+              <h3 className="font-extrabold text-xl text-navy">Curso Extra de Salgados Assados</h3>
+            </div>
+            <ul className="space-y-2 text-sm text-foreground">
+              {["Esfihas abertas e fechadas", "Enroladinhos saborosos", "Empadas profissionais", "Receitas extras para faturar ainda mais"].map(i => (
+                <li key={i} className="flex gap-2"><Check className="text-primary shrink-0 mt-0.5" size={16}/> {i}</li>
+              ))}
+            </ul>
+            <p className="mt-4 text-xs text-muted-foreground line-through">De R$ 67,00</p>
+            <p className="text-sm font-bold text-primary">GRÁTIS para você hoje</p>
+          </div>
+        </div>
+      </div>
+      <div className="mt-8">
+        <img src={assados} alt="Salgados assados" width={1024} height={768} loading="lazy" className="max-w-2xl mx-auto rounded-2xl shadow-xl w-full h-auto object-cover" />
+      </div>
+    </section>
+  );
+}
+
+function Transformation() {
+  const before = ["Sem renda extra no fim do mês", "Receitas que não dão certo", "Falta de confiança para vender", "Sem saber por onde começar"];
+  const after = ["Produz salgados de nível profissional", "Vende para amigos, vizinhos e empresas", "Uma nova fonte de renda em casa", "Mais liberdade e tempo com a família"];
+  return (
+    <section className="px-5 py-16 bg-background">
+      <SectionTitle kicker="Sua transformação">
+        O <span className="text-primary">antes</span> e <span className="text-primary">depois</span> do método
+      </SectionTitle>
+      <div className="mt-10 max-w-4xl mx-auto grid md:grid-cols-2 gap-5">
+        <div className="bg-white border-2 border-border rounded-2xl p-6">
+          <div className="text-center mb-4">
+            <span className="inline-block bg-muted text-muted-foreground text-xs font-bold uppercase px-3 py-1 rounded">Antes</span>
+            <h3 className="font-bold text-lg text-navy mt-2">Sem o método</h3>
+          </div>
+          <ul className="space-y-3">
+            {before.map(b => (
+              <li key={b} className="flex items-start gap-2 text-sm text-muted-foreground">
+                <X className="text-red-500 shrink-0 mt-0.5" size={18}/> {b}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="bg-white border-2 border-primary rounded-2xl p-6 shadow-xl relative">
+          <div className="text-center mb-4">
+            <span className="inline-block bg-primary text-primary-foreground text-xs font-bold uppercase px-3 py-1 rounded">Depois</span>
+            <h3 className="font-bold text-lg text-navy mt-2">Com o método</h3>
+          </div>
+          <ul className="space-y-3">
+            {after.map(b => (
+              <li key={b} className="flex items-start gap-2 text-sm text-foreground font-medium">
+                <Check className="text-green-600 shrink-0 mt-0.5" size={18}/> {b}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>
@@ -265,32 +313,34 @@ function Inside() {
 
 function Testimonials() {
   const t = [
-    { n: "Mariana S.", c: "Curitiba - PR", q: "Em menos de uma semana já notei a diferença. Minha mente finalmente desacelerou e hoje durmo muito melhor!" },
-    { n: "Ricardo A.", c: "São Paulo - SP", q: "As técnicas são simples, práticas e realmente funcionam. Melhor compra que fiz esse ano." },
-    { n: "Ana Paula", c: "Belo Horizonte - MG", q: "Eu sofria com pensamentos a noite inteira. O método mudou completamente minhas noites." },
-    { n: "Juliano R.", c: "Porto Alegre - RS", q: "Já tentei de tudo e nada funcionava. O Método Desligamento Mental realmente funciona." },
+    { n: "Maria S.", a: 42, c: "Recife - PE", q: "Comecei fazendo salgados para amigos e hoje tenho encomendas toda semana. Mudou minha vida!" },
+    { n: "Joana P.", a: 35, c: "São Paulo - SP", q: "As massas finalmente ficaram do jeito que eu queria. Hoje vendo mais de 300 salgados por semana." },
+    { n: "Carla R.", a: 50, c: "Belo Horizonte - MG", q: "Eu não acreditava que conseguiria. Em 2 semanas paguei o curso e ainda sobrou dinheiro." },
+    { n: "Rodrigo M.", a: 29, c: "Curitiba - PR", q: "Comprei pensando em renda extra, hoje é minha renda principal. Recomendo demais." },
+    { n: "Patrícia A.", a: 38, c: "Salvador - BA", q: "Receitas testadas e que funcionam de verdade. Meus clientes amam, vivo cheia de pedidos." },
+    { n: "Lúcia F.", a: 55, c: "Porto Alegre - RS", q: "Achei que na minha idade não daria certo. Hoje vendo para uma cantina e ganho meu próprio dinheiro." },
   ];
   return (
-    <section className="px-5 py-14 max-w-6xl mx-auto">
-      <h2 className="text-2xl md:text-3xl text-center text-navy font-bold">
-        Eles também achavam que nunca conseguiriam dormir melhor
-      </h2>
-      <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {t.map((x) => (
-          <div key={x.n} className="bg-card border border-border rounded-lg p-5 shadow-sm">
+    <section className="px-5 py-16 bg-cream">
+      <SectionTitle kicker="Quem já comprou">
+        Histórias reais de quem está <span className="text-primary">faturando</span>
+      </SectionTitle>
+      <div className="mt-10 max-w-6xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {t.map(x => (
+          <div key={x.n} className="bg-white border border-border rounded-2xl p-5 shadow-sm">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-navy/10 flex items-center justify-center text-navy font-bold">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-[color:var(--brand-red-dark)] text-white font-extrabold flex items-center justify-center text-lg">
                 {x.n[0]}
               </div>
               <div>
-                <p className="text-sm font-bold text-navy">{x.n}</p>
-                <div className="flex text-primary">
+                <p className="font-bold text-navy text-sm">{x.n}, {x.a}</p>
+                <p className="text-[11px] text-muted-foreground">{x.c}</p>
+                <div className="flex text-secondary mt-0.5">
                   {[...Array(5)].map((_, i) => <Star key={i} size={12} fill="currentColor"/>)}
                 </div>
               </div>
             </div>
-            <p className="text-xs text-foreground italic mt-3 leading-relaxed">"{x.q}"</p>
-            <p className="text-[11px] font-semibold text-muted-foreground mt-3">{x.c}</p>
+            <p className="mt-4 text-sm text-foreground italic leading-relaxed">"{x.q}"</p>
           </div>
         ))}
       </div>
@@ -298,55 +348,66 @@ function Testimonials() {
   );
 }
 
-function Pricing() {
-  const perks = [
-    "Acesso imediato após a compra",
-    "Ambiente seguro e criptografado",
-    "7 dias de garantia incondicional",
-    "Suporte humanizado",
-  ];
+function Guarantee() {
   return (
-    <section id="oferta" className="bg-cream px-5 py-14">
-      <div className="max-w-5xl mx-auto md:grid md:grid-cols-5 md:gap-8 md:items-center">
-        <img src={productMockup} alt="Método" className="hidden md:block md:col-span-2 w-full max-w-xs mx-auto" loading="lazy" />
-        <div className="md:col-span-3 bg-card rounded-2xl border border-border shadow-lg p-7 text-center">
-          <h2 className="text-xl md:text-2xl text-navy font-bold leading-tight">
-            Você está a poucos minutos de dormir com mais tranquilidade
-          </h2>
-          <div className="mt-4 inline-block border border-red-400 text-red-600 text-[11px] font-bold px-3 py-1 rounded-md uppercase">
-            Oferta por tempo limitado
-          </div>
-          <p className="text-xs text-muted-foreground mt-4 line-through">De R$ 67,00</p>
-          <p className="text-xs text-muted-foreground">apenas</p>
-          <div className="mt-1">
-            <span className="text-lg text-foreground align-top">R$</span>
-            <span className="text-5xl md:text-6xl font-bold text-navy">27,00</span>
-          </div>
-          <div className="mt-5"><CTAButton href="https://pay.cakto.com.br/38dee85_926622">QUERO MEU ACESSO AGORA</CTAButton></div>
-          <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-2 text-left">
-            {perks.map((p) => (
-              <li key={p} className="flex items-center gap-2 text-xs text-foreground">
-                <span className="bg-green-500 text-white rounded p-0.5"><Check size={12}/></span>
-                {p}
-              </li>
-            ))}
-          </ul>
+    <section className="px-5 py-16 bg-gradient-to-br from-[color:var(--brand-red-dark)] to-primary text-white">
+      <div className="max-w-4xl mx-auto grid md:grid-cols-[auto_1fr] gap-8 items-center text-center md:text-left">
+        <img src={garantia} alt="Selo Garantia 7 dias" width={1024} height={1024} loading="lazy" className="w-40 md:w-48 mx-auto drop-shadow-2xl" />
+        <div>
+          <span className="inline-block bg-secondary text-navy text-[11px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-md mb-3">
+            Risco zero
+          </span>
+          <h2 className="text-3xl md:text-4xl font-extrabold font-display">Garantia Incondicional de 7 Dias</h2>
+          <p className="mt-4 text-white/90 leading-relaxed">
+            Você tem <strong>7 dias completos</strong> para testar o material. Se por qualquer motivo não gostar, basta enviar um e-mail e devolvemos <strong>100% do seu dinheiro</strong>. Sem perguntas, sem burocracia, sem risco para você.
+          </p>
         </div>
       </div>
     </section>
   );
 }
 
-function Guarantee() {
+function Offer() {
+  const perks = [
+    "Curso completo Segredos dos Salgados Lucrativos",
+    "Bônus 1: Guia de Congelamento de Salgados",
+    "Bônus 2: Curso Extra de Salgados Assados",
+    "Acesso imediato e vitalício",
+    "Atualizações futuras gratuitas",
+    "Suporte humanizado por e-mail",
+  ];
   return (
-    <section className="bg-accent px-5 py-14">
-      <div className="max-w-3xl mx-auto md:flex md:items-center md:gap-8 text-center md:text-left">
-        <img src={seloGarantia.url} alt="Selo de Garantia 7 Dias" className="w-32 h-32 md:w-40 md:h-40 shrink-0 mx-auto md:mx-0 mb-4 md:mb-0 object-contain" loading="lazy" />
-        <div>
-          <h2 className="text-2xl md:text-3xl text-navy font-bold">Garantia de 7 Dias</h2>
-          <p className="mt-3 text-sm text-foreground leading-relaxed">
-            Você tem 7 dias para testar o Método Desligamento Mental. Se por qualquer motivo não ficar satisfeito, basta solicitar o reembolso que devolvemos 100% do seu dinheiro. Sem perguntas. Sem risco para você.
-          </p>
+    <section id="oferta" className="px-5 py-16 bg-background">
+      <SectionTitle kicker="Oferta especial">
+        Tudo isso por um <span className="text-primary">preço simbólico</span>
+      </SectionTitle>
+      <div className="mt-10 max-w-2xl mx-auto bg-white border-2 border-primary rounded-3xl shadow-2xl overflow-hidden">
+        <div className="bg-primary text-primary-foreground text-center py-3 font-extrabold uppercase tracking-wider text-sm flex items-center justify-center gap-2">
+          <Flame size={18}/> Oferta promocional por tempo limitado
+        </div>
+        <div className="p-7 md:p-10 text-center">
+          <ul className="text-left space-y-3 mb-7">
+            {perks.map(p => (
+              <li key={p} className="flex items-start gap-3 text-sm md:text-base text-foreground">
+                <span className="bg-green-500 text-white rounded-full p-0.5 shrink-0 mt-0.5"><Check size={14}/></span>
+                {p}
+              </li>
+            ))}
+          </ul>
+          <div className="border-t border-border pt-6">
+            <p className="text-sm text-muted-foreground">De <span className="line-through">R$ 197,00</span> por apenas</p>
+            <div className="mt-2 flex items-start justify-center">
+              <span className="text-xl text-navy font-bold mt-2">R$</span>
+              <span className="text-6xl md:text-7xl font-extrabold text-primary leading-none">27</span>
+              <span className="text-2xl text-navy font-bold mt-2">,00</span>
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">à vista ou em até 12x no cartão</p>
+            <p className="mt-3 inline-block bg-secondary text-navy text-xs font-bold px-3 py-1 rounded-full">
+              💰 Você economiza R$ 170,00
+            </p>
+          </div>
+          <div className="mt-7"><CTA>Sim, quero começar a lucrar</CTA></div>
+          <div className="mt-5"><TrustRow /></div>
         </div>
       </div>
     </section>
@@ -355,35 +416,67 @@ function Guarantee() {
 
 function FAQ() {
   const faqs = [
-    { q: "O método funciona para qualquer pessoa?", a: "Sim, foi desenvolvido para qualquer adulto com dificuldades para dormir." },
-    { q: "Preciso de algum equipamento específico?", a: "Não. Você só precisa de um celular ou computador para acessar o conteúdo." },
-    { q: "Recebo por e-mail ou aplicativo?", a: "Você recebe acesso imediato por e-mail à área de membros." },
-    { q: "É seguro?", a: "Sim, o pagamento é processado em ambiente 100% seguro e criptografado." },
-    { q: "Por quanto tempo terei acesso?", a: "Você terá acesso vitalício ao conteúdo, incluindo atualizações futuras." },
-    { q: "E se eu não gostar?", a: "Você tem 7 dias de garantia incondicional para pedir reembolso." },
+    { q: "O acesso é realmente imediato?", a: "Sim! Assim que o pagamento é confirmado, você recebe o acesso no seu e-mail em poucos minutos." },
+    { q: "Preciso ter experiência prévia em cozinha?", a: "Não. O método foi feito para iniciantes. Tudo é explicado passo a passo, do básico ao avançado." },
+    { q: "Posso assistir pelo celular?", a: "Sim. O material é 100% compatível com celular, tablet e computador." },
+    { q: "O material é atualizado?", a: "Sim. Você tem acesso vitalício e recebe todas as atualizações futuras sem custo adicional." },
+    { q: "Como recebo o acesso?", a: "Por e-mail, com login e senha para a área de membros exclusiva." },
+    { q: "Existe garantia?", a: "Sim! Você tem 7 dias de garantia incondicional. Se não gostar, devolvemos 100% do seu dinheiro." },
   ];
-  const [open, setOpen] = useState<number | null>(null);
+  const [open, setOpen] = useState<number | null>(0);
   return (
-    <section className="px-5 py-14 bg-background">
-      <div className="max-w-5xl mx-auto">
-        <h2 className="text-2xl md:text-3xl text-center text-navy font-bold mb-8">
-          Perguntas Frequentes
-        </h2>
-        <div className="grid md:grid-cols-2 gap-3">
-          {faqs.map((f, i) => (
-            <div key={i} className="bg-card border border-border rounded-lg overflow-hidden h-fit">
-              <button
-                onClick={() => setOpen(open === i ? null : i)}
-                className="w-full flex justify-between items-center gap-3 p-4 text-left text-sm font-medium text-navy"
-              >
-                {f.q}
-                <ChevronDown size={18} className={`shrink-0 transition ${open === i ? "rotate-180" : ""}`} />
-              </button>
-              {open === i && <p className="px-4 pb-4 text-sm text-muted-foreground">{f.a}</p>}
-            </div>
-          ))}
-        </div>
+    <section className="px-5 py-16 bg-cream">
+      <SectionTitle kicker="Dúvidas">
+        Perguntas <span className="text-primary">frequentes</span>
+      </SectionTitle>
+      <div className="mt-10 max-w-3xl mx-auto space-y-3">
+        {faqs.map((f, i) => (
+          <div key={i} className="bg-white border border-border rounded-xl overflow-hidden">
+            <button
+              onClick={() => setOpen(open === i ? null : i)}
+              className="w-full flex justify-between items-center gap-3 p-4 text-left font-bold text-navy"
+            >
+              {f.q}
+              <ChevronDown size={20} className={`shrink-0 transition ${open === i ? "rotate-180 text-primary" : ""}`} />
+            </button>
+            {open === i && <p className="px-4 pb-4 text-sm text-muted-foreground leading-relaxed">{f.a}</p>}
+          </div>
+        ))}
       </div>
     </section>
+  );
+}
+
+function FinalCTA() {
+  return (
+    <section className="relative px-5 py-16 bg-navy text-white overflow-hidden">
+      <img src={heroImg} alt="Salgados profissionais" width={1024} height={1024} loading="lazy" className="absolute inset-0 w-full h-full object-cover opacity-15" />
+      <div className="relative max-w-3xl mx-auto text-center">
+        <Award className="mx-auto text-secondary mb-4" size={48}/>
+        <h2 className="text-3xl md:text-4xl font-extrabold font-display leading-tight">
+          Comece hoje. <span className="text-secondary">Lucre ainda esta semana.</span>
+        </h2>
+        <p className="mt-4 text-white/90 max-w-xl mx-auto">
+          Você está a um clique de transformar sua cozinha em uma fonte real de renda. Não deixe essa oportunidade passar.
+        </p>
+        <div className="mt-7 max-w-md mx-auto"><CTA>Quero garantir meu acesso</CTA></div>
+        <div className="mt-5"><TrustRow light /></div>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="bg-[color:var(--brand-red-dark)] text-white/80 text-xs text-center py-8 px-4 space-y-2">
+      <div className="flex flex-wrap justify-center gap-5">
+        <span className="flex items-center gap-1"><Shield size={12}/> Compra segura</span>
+        <span className="flex items-center gap-1"><Check size={12}/> Satisfação garantida</span>
+        <span className="flex items-center gap-1"><Lock size={12}/> Privacidade protegida</span>
+        <span className="flex items-center gap-1"><Clock size={12}/> Acesso imediato</span>
+      </div>
+      <p>© 2026 Segredos dos Salgados Lucrativos. Todos os direitos reservados.</p>
+      <p className="text-white/60 max-w-2xl mx-auto">Este produto não garante a obtenção de resultados. Qualquer referência a renda é apenas ilustrativa.</p>
+    </footer>
   );
 }
